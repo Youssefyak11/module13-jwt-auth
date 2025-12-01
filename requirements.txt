@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy
+python-jose[cryptography]
+passlib[bcrypt]
+pydantic[email]
+
+pytest
+pytest-playwright

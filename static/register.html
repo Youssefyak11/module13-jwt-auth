@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .error { color: red; }
+    .success { color: green; }
+    form { max-width: 300px; }
+  </style>
+</head>
+<body>
+  <h1>Register</h1>
+
+  <form id="register-form">
+    <label>Email:
+      <input type="email" id="email" required />
+    </label><br><br>
+
+    <label>Password:
+      <input type="password" id="password" required />
+    </label><br><br>
+
+    <label>Confirm Password:
+      <input type="password" id="confirm-password" required />
+    </label><br><br>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    const API_BASE = "";
+
+    document.getElementById("register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+      const messageEl = document.getElementById("message");
+      messageEl.className = "";
+
+      if (!email.includes("@")) {
+        messageEl.textContent = "Please enter a valid email address.";
+        messageEl.classList.add("error");
+        return;
+      }
+
+      if (password.length < 8) {
+        messageEl.textContent = "Password must be at least 8 characters.";
+        messageEl.classList.add("error");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        messageEl.textContent = "Passwords do not match.";
+        messageEl.classList.add("error");
+        return;
+      }
+
+      try {
+        const resp = await fetch(`${API_BASE}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          messageEl.textContent = data.detail || "Registration failed.";
+          messageEl.classList.add("error");
+          return;
+        }
+
+        localStorage.setItem("token", data.access_token);
+        messageEl.textContent = "Registration successful!";
+        messageEl.classList.add("success");
+      } catch (err) {
+        messageEl.textContent = "Network error.";
+        messageEl.classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>
