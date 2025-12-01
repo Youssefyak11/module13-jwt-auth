@@ -29,8 +29,8 @@ pytest tests/e2e
 Build and run:
 
 ```bash
-docker build -t your-dockerhub-username/module13-jwt-auth .
-docker run -p 8000:8000 your-dockerhub-username/module13-jwt-auth
+docker build -t youssefyak11/module13-jwt-auth .
+docker run -p 8000:8000 youssefyak11/module13-jwt-auth
 ```
 
 Then visit the same `/static` URLs as above.
